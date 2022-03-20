@@ -19,3 +19,11 @@ steps:
   inputs:
     target: 'apk'
     projectDirectory: '$(projectDirectory)'
+- task: FlutterBuild@0
+  inputs:
+    target: 'web'
+    projectDirectory: '$(projectDirectory)'
+- task: FlutterBuild@0
+  inputs:
+    target: 'windows'
+    projectDirectory: '$(projectDirectory)'
