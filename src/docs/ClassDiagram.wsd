@@ -1,0 +1,26 @@
+@startuml   
+' Class Definitions
+class BoardPainter << W, LightSalmon>>
+class CustomPainter << F, Blue >>
+
+class Timeline
+class Path
+class Scene
+class Drill
+class PracticePlan
+class MoveableIcon
+{
+    +Acceleration
+    +Velocity
+}
+
+class IconGroup
+Class Icon{
+    +Offset
+    +Image
+}
+
+' Class Relationships
+CustomPainter <|-- BoardPainter
+IconGroup o-- Icon
+@enduml
