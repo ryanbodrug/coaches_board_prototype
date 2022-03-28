@@ -19,9 +19,15 @@ class DrillWidget extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(12),
       ),
-      child: ExpansionTile(leading: Icon(Icons.punch_clock, semanticLabel: drill.durationInMinutes.toString()), title: Text(drill.title), children: [
-        DrillMetadataWidget(drill: drill),
-      ]),
+      child: ExpansionTile(
+          leading: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [const Icon(Icons.punch_clock), SizedBox(width: 30, child: TextField(controller: TextEditingController(text: drill.durationInMinutes.toString())))],
+          ),
+          title: Center(child: Text(drill.title)),
+          children: [
+            DrillMetadataWidget(drill: drill),
+          ]),
     );
   }
 }

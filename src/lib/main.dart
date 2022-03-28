@@ -75,15 +75,16 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
+      drawer: buildSeasons(),
+      endDrawer: buildOptions(),
       body: Row(children: [
-        buildSeasons(),
+        // buildSeasons(),
         Expanded(
           child: ListView(
             controller: drillsScrollController,
             children: buildDrills(),
           ),
         ),
-        buildOptions(),
       ]),
     );
   }
