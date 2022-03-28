@@ -1,4 +1,5 @@
-import 'package:coaches_board/board.dart';
+import 'package:coaches_board/models/drill.dart';
+import 'package:coaches_board/widgets/drill_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Coaches Board'),
     );
   }
 }
@@ -48,7 +49,17 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
+List<ExpandableDrill> generateItems(int numberOfItems) {
+  return List<ExpandableDrill>.generate(numberOfItems, (int index) {
+    return ExpandableDrill(
+      drill: Drill(title: "Drill $index", durationInMinutes: 10, description: "Lorem ipsum text", tags: ["Skating", "Shooting"]),
+    );
+  });
+}
+
 class _MyHomePageState extends State<MyHomePage> {
+  final List<ExpandableDrill> _data = generateItems(100);
+  ScrollController drillsScrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,14 +75,113 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: const Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: FractionallySizedBox(
-          widthFactor: 0.98,
-          heightFactor: 0.98,
-          child: Board()
-        )
+      body: Row(children: [
+        buildSeasons(),
+        Expanded(
+          child: ListView(
+            controller: drillsScrollController,
+            children: buildDrills(),
+          ),
+        ),
+        buildOptions(),
+      ]),
+    );
+  }
+
+  Widget buildPracticePlan() {
+    return ExpansionPanelList(
+      expansionCallback: (int index, bool isExpanded) {
+        setState(() {
+          _data[index].isExpanded = !isExpanded;
+        });
+      },
+      children: _data.map<ExpansionPanel>((ExpandableDrill item) {
+        return ExpansionPanel(
+            headerBuilder: (BuildContext context, bool isExpanded) {
+              return ListTile(
+                title: Text(item.drill.title),
+              );
+            },
+            // body: Row(
+            //   children: [
+            //     //const Expanded(child: Board()),
+            //     const ExpansionTile(
+            //       title: Text("Timeline"),
+            //       children: [Text("Timelinebody")],
+            //     ),
+            //     ExpansionTile(
+            //       title: const Text("Tags"),
+            //       children: item.drill.tags.map<Text>((String tag) {
+            //         return Text(tag);
+            //       }).toList(),
+            //     ),
+            //   ],
+            // ),
+            body: Text(item.drill.description),
+            isExpanded: item.isExpanded);
+      }).toList(),
+    );
+  }
+
+  List<DrillWidget> buildDrills() {
+    return _data.map<DrillWidget>((ExpandableDrill item) {
+      return DrillWidget(drill: item.drill);
+    }).toList();
+  }
+
+  Drawer buildOptions() {
+    return Drawer(
+        child: GridView.count(crossAxisCount: 2, padding: EdgeInsets.zero, children: const <Widget>[
+      DrawerHeader(
+        decoration: BoxDecoration(
+          color: Colors.blue,
+        ),
+        child: Text(
+          "Tools",
+          style: TextStyle(color: Colors.white, fontSize: 24),
+        ),
+      ),
+      GridTile(child: Icon(Icons.sports_hockey)),
+      GridTile(child: Icon(Icons.sports_hockey)),
+      GridTile(child: Icon(Icons.sports_hockey)),
+      GridTile(child: Icon(Icons.sports_hockey)),
+      GridTile(child: Icon(Icons.sports_hockey)),
+      GridTile(child: Icon(Icons.sports_hockey)),
+      GridTile(child: Icon(Icons.sports_hockey)),
+      GridTile(child: Icon(Icons.sports_hockey)),
+    ]));
+  }
+
+  Drawer buildSeasons() {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: const <Widget>[
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Text(
+              'Seasons',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.message),
+            title: Text('Messages'),
+          ),
+          ListTile(
+            leading: Icon(Icons.account_circle),
+            title: Text('Profile'),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+          ),
+        ],
       ),
     );
   }
