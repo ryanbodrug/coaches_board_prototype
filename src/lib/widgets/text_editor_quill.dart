@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'dart:async';
-import 'dart:io';
+// import 'dart:async';
+// import 'dart:io';
 
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:tuple/tuple.dart';
@@ -168,7 +168,7 @@ class LoggingShortcutManager extends ShortcutManager {
   KeyEventResult handleKeypress(BuildContext context, RawKeyEvent event) {
     final KeyEventResult result = super.handleKeypress(context, event);
     if (result == KeyEventResult.handled) {
-      print('Handled shortcut $event in $context');
+     // print('Handled shortcut $event in $context');
     }
     return result;
   }
@@ -182,7 +182,7 @@ class LoggingActionDispatcher extends ActionDispatcher {
     covariant Intent intent, [
     BuildContext? context,
   ]) {
-    print('Action invoked: $action($intent) from $context');
+    //print('Action invoked: $action($intent) from $context');
     super.invokeAction(action, intent, context);
 
     return null;

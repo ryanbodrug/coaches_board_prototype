@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher.dart' as uri_launcher;
 
 class TextEditorMarkdown extends StatefulWidget {
   const TextEditorMarkdown({Key? key}) : super(key: key);
@@ -75,7 +75,7 @@ Example image: ![alt text](resource:images/paths/backwards.png)
   late TabController tabController;
   late FocusNode textFieldFocusNode;
   final kEditIndex = 1;
-  Key textFieldKey = Key("TextEditorTextFieldKey");
+  Key textFieldKey = const Key("TextEditorTextFieldKey");
 
   @override
   void initState() {
@@ -141,10 +141,10 @@ Example image: ![alt text](resource:images/paths/backwards.png)
       Uri? url = Uri.tryParse(href.trimLeft());
       if (url != null) {
         if (!url.hasScheme) {
-          href = 'https://' + href;
+          url = url.replace(scheme: 'https://');
         }
+        uri_launcher.launchUrl(url);
       }
-      launch(href);
     }
   }
 
